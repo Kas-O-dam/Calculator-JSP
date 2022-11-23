@@ -33,6 +33,8 @@ prior = {
 	'en_index': 0,
 	'st_index': 0,
 	'op_index': 0,
+	'active': 0,
+	'passive': 0,
 	'example': '',
 	'operator': ''
 }
@@ -42,7 +44,7 @@ proto = {
 	'st_index': 0
 }
 # По идей тут должен быть инпут, строка присвоена чтоб не парится
-input_ex = '2+2*2'
+input_ex = '697+243*2358'
 
 def analize():
 	# выставляем все переменные как глобальные
@@ -56,15 +58,15 @@ def analize():
 	# фунция для нахождения пассивного числа (числителя)
 	def get_passive():
 		# Содержит в себе пассивное число и будет ретарнино по окончании интерпретации
-		string = 0
+		string = ''
 		# интерпретатор
-		for sym in input_ex[:prior['op_index']:-1]: # перебираем символы в подстроке
+		for sym in input_ex[prior['op_index']-1::-1][::-1]: # перебираем символы в подстроке
 			# блок-try (трай) служит для ловли ошибок
 			try:
-				print('get_passive()/var:string: ' + string)
 				# Если содержимое трай вызывает ошибку... ->
 				# пробуем, я посставил это в начало, чтобы переменной пассивного числа не присваивалась всякаяя фигня
 				int(sym)
+				print('get_passive()/var:string: ' + sym)
 				# теперь присваеваем
 				string+=sym
 			except:
@@ -73,11 +75,11 @@ def analize():
 				return string
 	# всё тоже самое только для активного числа (знаменателя)
 	def get_active():
-		string = 0
-		for sym in input_ex[prior['op_index']::+1]:
+		string = ''
+		for sym in input_ex[prior['op_index']+1::]:
 			try:
-				print('get_active()/var:string: ' + string)
 				int(sym)
+				print('get_active()/var:string: ' + sym)
 				string+=int(sym)
 			except:
 				return string
@@ -92,9 +94,12 @@ def analize():
 				'en_index': None,
 				'st_index': None,
 				# индекс оператора
-				'op_index': "1", #get_index('*'),
-				# подстрока с приоритетной частью примера
-				'example': input_ex[get_passive():get_active():],
+				'op_index': 7, #get_index('*'),
+				# активное число
+				'active': get_active(),
+				# пассивное число
+				'passive': get_passive(),
+				'example': input_ex[prior['st_index']:prior['en_index']],
 				# Да, это тоже важно
 				'operator': '*'
 			}
@@ -104,9 +109,10 @@ def analize():
 				'example': input_ex,
 				'st_index': 0
 			}
-	print('object:prior: ')
-	print(prior)
-	print('object:proto: ')
-	print(proto)
+	#print('object:prior: ')
+	#print(prior)
+	#print('object:proto: ')
+	#print(proto)
+	print(input_ex[prior['op_index']-1::-1])
 # Всё будет оформлено в виде модуля, так что обернуть функцию и вызвать её - это обязательно
 analize()
