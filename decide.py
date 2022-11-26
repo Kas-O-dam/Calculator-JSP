@@ -44,29 +44,31 @@ proto = {
 	'st_index': 0
 }
 # По идей тут должен быть инпут, строка присвоена чтоб не парится
-input_ex = '697+243*2358'
-
+input_ex = '697+24309243*3535988-980'
 def analize():
 	# выставляем все переменные как глобальные
 	global prior
 	global proto
 	global input_ex
+	counter=0
 	# будущая функция для нахождения индекса приоритетного оператора
 	def get_index(operator):
 		# Так нужно
 		pass
 	# фунция для нахождения пассивного числа (числителя)
 	def get_passive():
+		global prior
 		# Содержит в себе пассивное число и будет ретарнино по окончании интерпретации
 		string = ''
+		range = input_ex[prior['op_index']-2::-1]
 		# интерпретатор
-		for sym in input_ex[prior['op_index']-1::-1][::-1]: # перебираем символы в подстроке
+		for sym in range: # перебираем символы в подстроке
 			# блок-try (трай) служит для ловли ошибок
 			try:
 				# Если содержимое трай вызывает ошибку... ->
 				# пробуем, я посставил это в начало, чтобы переменной пассивного числа не присваивалась всякаяя фигня
 				int(sym)
-				print('get_passive()/var:string: ' + sym)
+				# print('get_passive()/var:string: ' + sym)
 				# теперь присваеваем
 				string+=sym
 			except:
@@ -76,29 +78,30 @@ def analize():
 	# всё тоже самое только для активного числа (знаменателя)
 	def get_active():
 		string = ''
-		for sym in input_ex[prior['op_index']+1::]:
+		range = input_ex[prior['op_index']::]
+		print(range)
+		for sym in range:
 			try:
 				int(sym)
-				print('get_active()/var:string: ' + sym)
-				string+=int(sym)
+				string+=sym
 			except:
 				return string
 
 	# Вот тут начинается объектная жесть
 	for i in input_ex:
+		counter+=1
 		# делить добавим потом, для начала нужен алгоритм
 		if(i=='*'):
 			# присваиваем объекту все свойства
+			prior['op_index'] = counter
 			prior = {
 				# Это нужно на будущее
 				'en_index': None,
 				'st_index': None,
-				# индекс оператора
-				'op_index': 7, #get_index('*'),
 				# активное число
-				'active': get_active(),
+				'active': int(get_active()),
 				# пассивное число
-				'passive': get_passive(),
+				'passive': int(get_passive()),
 				'example': input_ex[prior['st_index']:prior['en_index']],
 				# Да, это тоже важно
 				'operator': '*'
@@ -113,6 +116,5 @@ def analize():
 	#print(prior)
 	#print('object:proto: ')
 	#print(proto)
-	print(input_ex[prior['op_index']-1::-1])
 # Всё будет оформлено в виде модуля, так что обернуть функцию и вызвать её - это обязательно
 analize()
