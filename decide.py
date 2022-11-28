@@ -44,7 +44,7 @@ proto = {
 	'st_index': 0
 }
 # По идей тут должен быть инпут, строка присвоена чтоб не парится
-input_ex = '697+24309243*3535988-980'
+input_ex = '697+243*3588-980'
 def analize():
 	# выставляем все переменные как глобальные
 	global prior
@@ -68,40 +68,40 @@ def analize():
 				# Если содержимое трай вызывает ошибку... ->
 				# пробуем, я посставил это в начало, чтобы переменной пассивного числа не присваивалась всякаяя фигня
 				int(sym)
-				# print('get_passive()/var:string: ' + sym)
 				# теперь присваеваем
 				string+=sym
 			except:
 				# <- ...то выполнится блок-ексепт
 				# ретарн пассивного числа
-				return string
+				print('passive: ' + string[::-1])
+				return string[::-1]
 	# всё тоже самое только для активного числа (знаменателя)
 	def get_active():
 		string = ''
 		range = input_ex[prior['op_index']::]
-		print(range)
 		for sym in range:
 			try:
 				int(sym)
 				string+=sym
 			except:
+				print('active: ' + string)
 				return string
 
 	# Вот тут начинается объектная жесть
 	for i in input_ex:
 		counter+=1
 		# делить добавим потом, для начала нужен алгоритм
-		if(i=='*'):
+		if(i=='+'):
 			# присваиваем объекту все свойства
-			prior['op_index'] = counter
 			prior = {
 				# Это нужно на будущее
 				'en_index': None,
 				'st_index': None,
+				'op_index': counter,
 				# активное число
-				'active': int(get_active()),
+				'active': get_active(),
 				# пассивное число
-				'passive': int(get_passive()),
+				'passive': get_passive(),
 				'example': input_ex[prior['st_index']:prior['en_index']],
 				# Да, это тоже важно
 				'operator': '*'
@@ -112,9 +112,5 @@ def analize():
 				'example': input_ex,
 				'st_index': 0
 			}
-	#print('object:prior: ')
-	#print(prior)
-	#print('object:proto: ')
-	#print(proto)
 # Всё будет оформлено в виде модуля, так что обернуть функцию и вызвать её - это обязательно
 analize()
