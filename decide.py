@@ -50,20 +50,17 @@ def analize():
 	global prior
 	global proto
 	global input_ex
-	counter=0
-	# будущая функция для нахождения индекса приоритетного оператора
-	def get_index(operator):
-		# Так нужно
-		pass
+	counter=-1
 	# фунция для нахождения пассивного числа (числителя)
 	def get_passive():
 		global prior
 		# Содержит в себе пассивное число и будет ретарнино по окончании интерпретации
 		string = ''
-		range = input_ex[prior['op_index']-2::-1]
 		# интерпретатор
-		for sym in range: # перебираем символы в подстроке
+		for idx in range(0,prior['op_index'])[::-1]: # перебираем символы в подстроке
 			# блок-try (трай) служит для ловли ошибок
+			#print('pidx: '+str(idx))
+			sym = input_ex[idx]
 			try:
 				# Если содержимое трай вызывает ошибку... ->
 				# пробуем, я посставил это в начало, чтобы переменной пассивного числа не присваивалась всякаяя фигня
@@ -73,39 +70,42 @@ def analize():
 			except:
 				# <- ...то выполнится блок-ексепт
 				# ретарн пассивного числа
-				print('passive: ' + string[::-1])
+				# print('passive: ' + string[::-1])
+				return string[::-1]
+			# На случай если пассивное число самое первое в примере
+			if(idx==0):
+				# print('passive: ' + string[::-1])
 				return string[::-1]
 	# всё тоже самое только для активного числа (знаменателя)
 	def get_active():
 		string = ''
-		range = input_ex[prior['op_index']::]
-		for sym in range:
+		for idx in range(prior['op_index']+1,len(input_ex)):
+			# print('aidx: ' + str(idx))
+			sym = input_ex[idx]
 			try:
 				int(sym)
 				string+=sym
 			except:
-				print('active: ' + string)
+				# print('active: ' + string)
 				return string
-
+			if(idx==len(input_ex)-1):
+				# print('active: ' + string)
+				return string
 	# Вот тут начинается объектная жесть
 	for i in input_ex:
 		counter+=1
 		# делить добавим потом, для начала нужен алгоритм
-		if(i=='+'):
+		if(i=='*'):
 			# присваиваем объекту все свойства
-			prior = {
-				# Это нужно на будущее
-				'en_index': None,
-				'st_index': None,
-				'op_index': counter,
-				# активное число
-				'active': get_active(),
-				# пассивное число
-				'passive': get_passive(),
-				'example': input_ex[prior['st_index']:prior['en_index']],
-				# Да, это тоже важно
-				'operator': '*'
-			}
+			# Тут всё можно было сделать проще... но зачем? Ведь и так же работает. На самом деле так нужно чтобы свойства не были кортежами
+			op_dict = {'op_index': counter}
+			prior.update(op_dict)
+			# активное число
+			op_dict = {'active': get_active()}
+			prior.update(op_dict)
+			# пассивное число
+			op_dict = {'passive': get_passive()}
+			prior.update(op_dict)
 
 			proto = {
 				# Это всё тоже на будущее
