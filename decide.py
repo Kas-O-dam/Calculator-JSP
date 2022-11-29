@@ -59,7 +59,7 @@ def analize():
 		# интерпретатор
 		for idx in range(0,prior['op_index'])[::-1]: # перебираем символы в подстроке
 			# блок-try (трай) служит для ловли ошибок
-			#print('pidx: '+str(idx))
+			print('pidx: '+str(idx))
 			sym = input_ex[idx]
 			try:
 				# Если содержимое трай вызывает ошибку... ->
@@ -70,33 +70,32 @@ def analize():
 			except:
 				# <- ...то выполнится блок-ексепт
 				# ретарн пассивного числа
-				# print('passive: ' + string[::-1])
+				print('passive: ' + string[::-1])
 				return string[::-1]
 			# На случай если пассивное число самое первое в примере
 			if(idx==0):
-				#ы
-				# print('passive: ' + string[::-1])
+				print('passive: ' + string[::-1])
 				return string[::-1]
 	# всё тоже самое только для активного числа (знаменателя)
 	def get_active():
 		string = ''
 		for idx in range(prior['op_index']+1,len(input_ex)):
-			# print('aidx: ' + str(idx))
+			print('aidx: ' + str(idx))
 			sym = input_ex[idx]
 			try:
 				int(sym)
 				string+=sym
 			except:
-				# print('active: ' + string)
+				print('active: ' + string)
 				return string
 			if(idx==len(input_ex)-1):
-				# print('active: ' + string)
+				print('active: ' + string)
 				return string
 	# Вот тут начинается объектная жесть
 	for i in input_ex:
 		counter+=1
 		# делить добавим потом, для начала нужен алгоритм
-		if(i=='*'):
+		if(i=='*' or i=='/'):
 			# присваиваем объекту все свойства
 			# Тут всё можно было сделать проще... но зачем? Ведь и так же работает. На самом деле так нужно чтобы свойства не были кортежами
 			op_dict = {'op_index': counter}
@@ -107,11 +106,32 @@ def analize():
 			# пассивное число
 			op_dict = {'passive': get_passive()}
 			prior.update(op_dict)
-
-			proto = {
-				# Это всё тоже на будущее
-				'example': input_ex,
-				'st_index': 0
-			}
+			if(i=='*'):
+				op_dict = {'operator': '*'}
+				prior.update(op_dict)
+			if(i=='/'):
+				op_dict = {'operator': '/'}
+				prior.update(op_dict)
+	counter=-1
+	for i in input_ex:
+		counter+=1
+		# делить добавим потом, для начала нужен алгоритм
+		if(i=='+' or i=='-'):
+			# присваиваем объекту все свойства
+			# Тут всё можно было сделать проще... но зачем? Ведь и так же работает. На самом деле так нужно чтобы свойства не были кортежами
+			op_dict = {'op_index': counter}
+			prior.update(op_dict)
+			# активное число
+			op_dict = {'active': get_active()}
+			prior.update(op_dict)
+			# пассивное число
+			op_dict = {'passive': get_passive()}
+			prior.update(op_dict)
+			if(i=='+'):
+				op_dict = {'operator': '+'}
+				prior.update(op_dict)
+			if(i=='-'):
+				op_dict = {'operator': '-'}
+				prior.update(op_dict)
 # Всё будет оформлено в виде модуля, так что обернуть функцию и вызвать её - это обязательно
 analize()
