@@ -44,12 +44,10 @@ proto = {
 	'st_index': 0
 }
 # По идей тут должен быть инпут, строка присвоена чтоб не парится
-input_ex = '697+243*3588-980'
-def analize():
+def analize(input_ex):
 	# выставляем все переменные как глобальные
 	global prior
 	global proto
-	global input_ex
 	counter=-1
 	# фунция для нахождения пассивного числа (числителя)
 	def get_passive():
@@ -59,7 +57,7 @@ def analize():
 		# интерпретатор
 		for idx in range(0,prior['op_index'])[::-1]: # перебираем символы в подстроке
 			# блок-try (трай) служит для ловли ошибок
-			print('pidx: '+str(idx))
+			#print('pidx: '+str(idx))
 			sym = input_ex[idx]
 			try:
 				# Если содержимое трай вызывает ошибку... ->
@@ -70,27 +68,47 @@ def analize():
 			except:
 				# <- ...то выполнится блок-ексепт
 				# ретарн пассивного числа
-				print('passive: ' + string[::-1])
+				op_dict = {'st_index': idx+1}
+				prior.update(op_dict)
+				#print('passive: ' + string[::-1])
 				return string[::-1]
 			# На случай если пассивное число самое первое в примере
 			if(idx==0):
-				print('passive: ' + string[::-1])
+				op_dict = {'st_index': idx}
+				prior.update(op_dict)
+				#print('passive: ' + string[::-1])
 				return string[::-1]
 	# всё тоже самое только для активного числа (знаменателя)
 	def get_active():
 		string = ''
 		for idx in range(prior['op_index']+1,len(input_ex)):
-			print('aidx: ' + str(idx))
+			#print('aidx: ' + str(idx))
 			sym = input_ex[idx]
 			try:
 				int(sym)
 				string+=sym
 			except:
-				print('active: ' + string)
+				op_dict = {'en_index': idx+1}
+				prior.update(op_dict)
+				#print('active: ' + string)
 				return string
 			if(idx==len(input_ex)-1):
-				print('active: ' + string)
+				op_dict = {'en_index': idx+2}
+				prior.update(op_dict)
+				#print('active: ' + string)
 				return string
+	def decide():
+		result=0
+		if(prior['operator']=='*'):
+			result = int(prior['passive'])*int(prior['active'])
+		if(prior['operator']=='/'):
+			result = int(prior['passive'])/int(prior['active'])
+		if(prior['operator']=='+'):
+			result = int(prior['passive'])+int(prior['active'])
+		if(prior['operator']=='-'):
+			result = int(prior['passive'])-int(prior['active'])
+		#print('result: '+str(result))
+		return str(result)
 	# Вот тут начинается объектная жесть
 	for i in input_ex:
 		counter+=1
@@ -112,6 +130,11 @@ def analize():
 			if(i=='/'):
 				op_dict = {'operator': '/'}
 				prior.update(op_dict)
+				
+			input_ex = input_ex[0:prior['st_index']]+decide()+input_ex[prior['en_index']-1:len(input_ex)]
+			#print(prior['st_index'])
+			#print(prior['en_index'])
+			#print('ie: '+input_ex)
 	counter=-1
 	for i in input_ex:
 		counter+=1
@@ -133,5 +156,9 @@ def analize():
 			if(i=='-'):
 				op_dict = {'operator': '-'}
 				prior.update(op_dict)
+			input_ex = input_ex[0:prior['st_index']]+decide()+input_ex[prior['en_index']-1:len(input_ex)]
+			#print(prior['st_index'])
+			#print(prior['en_index'])
+			#print('ie: '+input_ex)
+	return input_ex
 # Всё будет оформлено в виде модуля, так что обернуть функцию и вызвать её - это обязательно
-analize()
