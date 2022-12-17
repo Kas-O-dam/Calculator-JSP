@@ -48,7 +48,7 @@ def calc(value):
 				op_dict = {'st_index': idx}
 				prior.update(op_dict)
 				#print('passive: ' + string[::-1]) #
-				return int(string[::-1])
+				return string[::-1]
 	def get_active():
 		string = ''
 		for idx in range(prior['op_index']+1,len(input_ex)):
@@ -66,7 +66,7 @@ def calc(value):
 				op_dict = {'en_index': idx+2}
 				prior.update(op_dict)
 				#print('active: ' + string) #
-				return int(string)
+				return string
 	def decide():
 		result=0
 		if(prior['operator']=='*'):
