@@ -23,6 +23,14 @@ proto = {
 }
 input_ex = ''
 counter = -1
+operations = ('+', '-', '*', '/')
+class SymbolError(Exception):
+	def __init__(self, *args):
+		self.symbol = args[0]
+		self.index = args[1]
+		self.message = 'uncorrect symbol \''+self.symbol+'\' in index '+str(self.index)
+	def __str__(self):
+		return self.message
 def calc(value):
 	global input_ex
 	global prior
@@ -40,6 +48,8 @@ def calc(value):
 				int(sym)
 				string+=sym
 			except:
+				if(sym not in operations):
+					raise SymbolError(sym, idx)
 				op_dict = {'st_index': idx+1}
 				prior.update(op_dict)
 				#print('passive: ' + string[::-1]) #
@@ -58,6 +68,8 @@ def calc(value):
 				int(sym)
 				string+=sym
 			except:
+				if(sym not in operations):
+					raise SymbolError(sym, idx)
 				op_dict = {'en_index': idx+1}
 				prior.update(op_dict)
 				#print('active: ' + string) #
