@@ -27,11 +27,13 @@ function calc(example){
 				//console.log('pindex: '+ index); //
 				string+=sym;
 			}else{
+				string = string.split("").reverse().join("");
 				prioritet.set('st_index', Number(index)+1);
 				//console.log('passive: ' + string); //
 				return string;
 			};
 			if(index==0){
+				string = string.split("").reverse().join("");
 				prioritet.set('st_index', Number(index));
 				//console.log('passive: ' + string); //
 				return string;
@@ -40,19 +42,19 @@ function calc(example){
 	};
 	function decide(){
 		if(prioritet.get('operator')=='**'){
-			return Number(prioritet.get('passive'))**Number(prioritet.get('active'));
+			return (+prioritet.get('passive')) ** (+prioritet.get('active'));
 		};
 		if(prioritet.get('operator')=='*'){
-			return Number(prioritet.get('passive'))*Number(prioritet.get('active'));
+			return (+prioritet.get('passive')) * (+prioritet.get('active'));
 		};
 		if(prioritet.get('operator')=='/'){
-			return Number(prioritet.get('passive'))/Number(prioritet.get('active'));
+			return (+prioritet.get('passive')) / (+prioritet.get('active'));
 		};
 		if(prioritet.get('operator')=='+'){
-			return Number(prioritet.get('passive'))+Number(prioritet.get('active'));
+			return (+prioritet.get('passive')) + (+prioritet.get('active'));
 		};
 		if(prioritet.get('operator')=='-'){
-			return Number(prioritet.get('passive'))-Number(prioritet.get('active'));
+			return (+prioritet.get('passive')) - (+prioritet.get('active'));
 		};
 	};
 	function search(op1, op2){
@@ -68,9 +70,9 @@ function calc(example){
 				prioritet.set('op_index_passive', counter);
 				prioritet.set('active', get_active());
 				prioritet.set('passive', get_passive());
-				//console.log(decide())
+				//console.log(example) //
 				example = example.slice(0, prioritet.get('st_index'))+decide()+example.slice(prioritet.get('en_index')-1, example.length);
-				//console.log(prioritet)
+				//console.log(prioritet) //
 				if(example.includes(op1) || example.includes(op2)){search(op1, op2);};
 				break;
 			};
@@ -84,9 +86,9 @@ function calc(example){
 				prioritet.set('op_index_passive', Number(i));
 				prioritet.set('active', get_active());
 				prioritet.set('passive', get_passive());
-				//console.log(decide())
+				//console.log(example) //
 				example = example.slice(0, prioritet.get('st_index'))+decide()+example.slice(prioritet.get('en_index')-1, example.length);
-				//console.log(prioritet)
+				//console.log(prioritet) //
 				if(example.includes(operator)){double_search(operator);};
 				break;
 			};
@@ -97,4 +99,4 @@ function calc(example){
 	search('+', '-');
 	return example
 };
-console.log(calc('2**3**2'));
+console.log(calc('2**3**2/4+2')); //
