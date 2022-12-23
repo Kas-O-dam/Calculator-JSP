@@ -1,0 +1,56 @@
+import tkinter as tk
+from decide import calc
+
+window = tk.Tk()
+#photo = tk.PhotoImage(file="*.png")
+#window.iconphoto(False, photo)
+window.config(bg='black')
+window.title('Calculator Python 3')
+window.geometry('304x146+0+0')
+window.resizable(False, False)
+enter = tk.Entry(width=37)
+
+def note(char):
+	enter.insert(tk.END, char)
+def call():
+	result = calc(enter.get())
+	enter.delete(0, tk.END)
+	enter.insert(tk.END, result)
+
+btn9 = tk.Button(window, text='9', width=6, command=lambda: note('9'))
+btn8 = tk.Button(window, text='8', width=6, command=lambda: note('8'))
+btn7 = tk.Button(window, text='7', width=6, command=lambda: note('7'))
+btn6 = tk.Button(window, text='6', width=6, command=lambda: note('6'))
+btn5 = tk.Button(window, text='5', width=6, command=lambda: note('5'))
+btn4 = tk.Button(window, text='4', width=6, command=lambda: note('4'))
+btn3 = tk.Button(window, text='3', width=6, command=lambda: note('3'))
+btn2 = tk.Button(window, text='2', width=6, command=lambda: note('2'))
+btn1 = tk.Button(window, text='1', width=6, command=lambda: note('1'))
+btn0 = tk.Button(window, text='0', width=6, command=lambda: note('0'))
+btn_minus = tk.Button(window, text='-', width=6, command=lambda: note('-'))
+btn_plus = tk.Button(window, text='+', width=6, command=lambda: note('+'))
+btn_multiple = tk.Button(window, text='*', width=6, command=lambda: note('*'))
+btn_divide = tk.Button(window, text='/', width=6, command=lambda: note('/'))
+btn_degree = tk.Button(window, text='**', width=6, command=lambda: note('**'))
+btn_equal = tk.Button(window, text='=', width=6, command=call)
+
+enter.grid(row=0, column=0, columnspan=4)
+btn9.grid(row=1, column=2)
+btn8.grid(row=1, column=1)
+btn7.grid(row=1, column=0)
+btn6.grid(row=2, column=2)
+btn5.grid(row=2, column=1)
+btn4.grid(row=2, column=0)
+btn3.grid(row=3, column=2)
+btn2.grid(row=3, column=1)
+btn1.grid(row=3, column=0)
+btn0.grid(row=4, column=1)
+
+btn_minus.grid(row=1, column=3)
+btn_plus.grid(row=2, column=3)
+btn_multiple.grid(row=3, column=3)
+btn_divide.grid(row=4, column=3)
+btn_degree.grid(row=4, column=0)
+btn_equal.grid(row=4, column=2)
+
+window.mainloop()
