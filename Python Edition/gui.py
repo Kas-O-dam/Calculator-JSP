@@ -2,21 +2,25 @@ import tkinter as tk
 from decide import calc
 
 window = tk.Tk()
-#photo = tk.PhotoImage(file="*.png")
-#window.iconphoto(False, photo)
+photo = tk.PhotoImage(file="TkCalc.png")
+window.iconphoto(False, photo)
 window.config(bg='black')
-window.title('Calculator Python 3')
-window.geometry('304x146+0+0')
+window.title('Tkinter Calculator')
+window.geometry('380x147+0+0')
 window.resizable(False, False)
+
 enter = tk.Entry(width=37)
+result = tk.Label(window, height=3, width=9)
 
 def note(char):
 	enter.insert(tk.END, char)
 def call():
-	result = calc(enter.get())
-	enter.delete(0, tk.END)
-	enter.insert(tk.END, result)
-
+	example = calc(enter.get())
+	result.config(text=example)
+def delete():
+	enter.delete(len(enter.get())-1)
+clear = tk.Button(window, text='clear', width=6, command=lambda: enter.delete(0, tk.END))
+delete = tk.Button(window, text='delete', width=6, command=delete)
 btn9 = tk.Button(window, text='9', width=6, command=lambda: note('9'))
 btn8 = tk.Button(window, text='8', width=6, command=lambda: note('8'))
 btn7 = tk.Button(window, text='7', width=6, command=lambda: note('7'))
@@ -31,10 +35,13 @@ btn_minus = tk.Button(window, text='-', width=6, command=lambda: note('-'))
 btn_plus = tk.Button(window, text='+', width=6, command=lambda: note('+'))
 btn_multiple = tk.Button(window, text='*', width=6, command=lambda: note('*'))
 btn_divide = tk.Button(window, text='/', width=6, command=lambda: note('/'))
-btn_degree = tk.Button(window, text='**', width=6, command=lambda: note('**'))
+btn_degree = tk.Button(window, text='^', width=6)#, command=lambda: note('**'))
 btn_equal = tk.Button(window, text='=', width=6, command=call)
 
+result.grid(row=3, column=4, rowspan=2)
 enter.grid(row=0, column=0, columnspan=4)
+clear.grid(row=2, column=4)
+delete.grid(row=1, column=4)
 btn9.grid(row=1, column=2)
 btn8.grid(row=1, column=1)
 btn7.grid(row=1, column=0)
