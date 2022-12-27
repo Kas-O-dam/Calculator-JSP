@@ -1,0 +1,64 @@
+body{
+	display: flex;
+	color: white;
+	font-weight: 1000;
+	-webkit-touch-callout: none; /* iOS Safari */
+	-webkit-user-select: none; /* Safari */
+	-khtml-user-select: none; /* Konqueror HTML */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* Internet Explorer/Edge */
+        user-select: none; /* Non-prefixed version, currently
+                              supported by Chrome and Opera */
+}
+#input{
+	background-color: rgba(0, 0, 0, 0.0);
+	color: white;
+}
+#input:focus{
+	outline: none;
+}
+#keyboard{
+	padding: 10px;
+	margin-top: 10px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	height: 260px;
+	width: 180px;	
+	border-width: 2px;
+	border-style: solid;
+	border-color: darkgray;
+	border-right-color: rgba(0, 0, 0, 0.0);
+	background-color: dimgray;
+}
+.botton{
+	border-width: 2px;
+	border-style: solid;
+	border-color: darkgray;
+	background-color: gray;
+	text-align: center;
+	width: 20px;
+	height: 10px;
+	margin: 2.5px;
+	padding: 10px
+}
+#input{
+	width: 145px;
+	height: 20px;
+}
+.botton:hover{
+	border-color: gray;
+	background-color: darkgray;
+}
+#operators{
+	display: flex;
+	flex-wrap: wrap;
+	width: 70px;
+	align-items: center;
+	margin-top: 10px;
+	border-width: 2px;
+	border-style: solid;
+	border-color: darkgray;
+	border-left-color: rgba(0, 0, 0, 0.0); 
+	background-color: dimgray;
+}
