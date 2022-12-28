@@ -1,3 +1,61 @@
+//general variables
+let form = document.getElementById('input');
+let col = document.getElementsByClassName('botton');
+let nums = new Object();
+//declare nubers
+nums.zero = col[9];
+nums.one = col[8];
+nums.two = col[7];
+nums.three = col[6];
+nums.four = col[5];
+nums.five = col[4];
+nums.six = col[3];
+nums.seven = col[2];
+nums.eight = col[1];
+nums.nine = col[0];
+//declare operators
+nums.plus = col[10];
+nums.minus = col[11];
+nums.multiple = col[12];
+nums.divide = col[13];
+nums.degree = col[14];
+nums.equal = col[15];
+//event numbers
+nums.zero.addEventListener('click', function(){form.value += '0'});
+nums.one.addEventListener('click', function(){form.value += '1'});
+nums.two.addEventListener('click', function(){form.value += '2'});
+nums.three.addEventListener('click', function(){form.value += '3'});
+nums.four.addEventListener('click', function(){form.value += '4'});
+nums.five.addEventListener('click', function(){form.value += '5'});
+nums.six.addEventListener('click', function(){form.value += '6'});
+nums.seven.addEventListener('click', function(){form.value += '7'});
+nums.eight.addEventListener('click', function(){form.value += '8'});
+nums.nine.addEventListener('click', function(){form.value += '9'});
+// event operators
+nums.plus.addEventListener('click', function(){form.value += '+'});
+nums.minus.addEventListener('click', function(){form.value += '-'});
+nums.multiple.addEventListener('click', function(){form.value += '*'});
+nums.divide.addEventListener('click', function(){form.value += '/'});
+nums.degree.addEventListener('click', function(){form.value += '**'});
+nums.equal.addEventListener('click', function(){form.value = calc(form.value)});
+// Hot keys
+document.addEventListener('keydown', function(event){if(event.key=='Enter'){form.value = calc(form.value)}});
+document.addEventListener('keydown', function(event){if(event.key=='Delete'){form.value = ''}});
+document.addEventListener('keydown', function(event){if(event.key=='Backspace'){form.value = form.value.slice(0, form.value.length-1)}});
+//delete == clear input
+//enter == decide
+//backspace == delete last character
+
+
+/*
+   #####
+   ##
+   #####  # ##    #     # ## ##    ###
+   ##     ##     # #    ##  #  #  #   #
+   ##     #     #####   #   #  #  ###
+   ##     #    #     #  #   #  #   ####
+*/
+
 let chk = 0;
 let sw = true;
 function calc(example){
